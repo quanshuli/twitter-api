@@ -7,12 +7,12 @@ import json
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
-
+count = 0
+logger.info(1)
 class FavRetweetListener(tweepy.StreamListener):
     def __init__(self, api):
         self.api = api
         self.me = api.me()
-
     def on_status(self, tweet):
         logger.info(f"Processing tweet id {tweet.id}")
         if tweet.in_reply_to_status_id is not None or \
@@ -29,8 +29,9 @@ class FavRetweetListener(tweepy.StreamListener):
             # Retweet, since we have not retweeted it yet
             try:
                 tweet.retweet()
+                logger.info(count,'retweets')
             except Exception as e:
-                logger.error("Error on fav and retweet", exc_info=True)
+                logger.error("Error on retweet", exc_info=True)
 
     def on_error(self, status):
         logger.error(status)
@@ -42,4 +43,4 @@ def main(keywords):
     stream.filter(track=keywords, languages=["en"])
 
 if __name__ == "__main__":
-    main(["Python", "Tweepy"])
+    main(["careerchange",'career','careerrelaunch','careertransition'])
